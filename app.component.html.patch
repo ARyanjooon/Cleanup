@@ -1,0 +1,28 @@
+<button class="btn btn-primary" (click)="toggleSignUp()" aria-label="Open sign up form">Sign Up</button>
+        <button class="btn btn-secondary" (click)="toggleLogin()" aria-label="Open login form">Log In</button>
+        <button class="btn btn-chatbox" (click)="toggleChatbox()" aria-label="Toggle chatbox">Chat</button>
+      </div>
+=======
+      <div class="auth-buttons">
+        <button class="btn btn-primary" (click)="toggleSignUp()" aria-label="Open sign up form">Sign Up</button>
+        <button class="btn btn-secondary" (click)="toggleLogin()" aria-label="Open login form">Log In</button>
+      </div>
+>>>>>>> REPLACE
+
+<<<<<<< SEARCH
+  <div class="chatbox-container" *ngIf="isChatboxOpen">
+    <div class="chatbox-header">
+      <span>Chat</span>
+      <button class="btn-close" (click)="toggleChatbox()" aria-label="Close chatbox">&times;</button>
+    </div>
+    <div class="chatbox-messages">
+      <p>Welcome to the chat! How can we help you?</p>
+    </div>
+    <div class="chatbox-input">
+      <input type="text" placeholder="Type your message..." aria-label="Chat message input" />
+      <button class="btn-send" aria-label="Send message">Send</button>
+    </div>
+  </div>
+</header>
+=======
+</header>

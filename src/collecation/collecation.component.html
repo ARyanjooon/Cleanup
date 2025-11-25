@@ -1,0 +1,113 @@
+<div class="hero-section">
+  <div class="hero-content" #animateItem>
+    <h1 class="hero-text">A Cleaner Community Starts With You.</h1>
+    <p class="hero-text">See waste? Report it. Help us keep our community clean by reporting illegal dumping and overflowing bins.</p>
+    <button class="cta-button" routerLink="/complain">Report Waste Now</button>
+  </div>
+</div>
+
+<section class="section-block info-section" #animateItem>
+  <div class="container">
+    <app-info id="about"></app-info>
+  </div>
+</section>
+
+<section id="how-it-works" class="section-block how-it-works-section" #animateItem>
+  <div class="container">
+    <h2>How It Works</h2>
+    <div class="steps-grid">
+      @for (step of howItWorksSteps; track step.step) {
+        <div class="step-item">
+          <div class="step-number">{{ step.step }}</div>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section id="why-it-matters" class="section-block why-it-matters-section" #animateItem>
+  <div class="container">
+    <h2>Why It Matters</h2>
+    <div class="benefits-grid">
+      @for (benefit of benefits; track benefit.title) {
+        <div class="benefit-item">
+          <h3>{{ benefit.title }}</h3>
+          <p>{{ benefit.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section id="activity" class="section-block recent-activity-section" #animateItem>
+  <div class="container">
+    <h2>Recent Activity</h2>
+    <p class="section-subtitle">See the impact our community is making! Here are some of the latest reported areas.</p>
+    <div class="activity-grid">
+      @for(item of recentActivity; track item.src) {
+        <div class="activity-item" [attr.data-alt]="item.alt">
+          <img [ngSrc]="item.src" [alt]="item.alt" width="800" height="600" priority="false">
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section-block testimonials-section" #animateItem>
+  <div class="container">
+    <h2>What People Are Saying</h2>
+    <div class="testimonials-scroller">
+      <div class="testimonials-container">
+        @for (testimonial of scrollingTestimonials; track $index) {
+          <div class="testimonial">
+            <blockquote>"{{ testimonial.quote }}"</blockquote>
+            <cite>- {{ testimonial.author }}</cite>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section-block contact-section" #animateItem>
+  <div class="container">
+    <app-contact></app-contact>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#why-it-matters">Why It Matters</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Contact Info</h3>
+      <p><i class="fas fa-envelope"></i>Email: info&#64;cleanupapp.com</p>
+      <p><i class="fas fa-phone"></i>Phone: (123) 456-7890</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 Community Waste Reporting App. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+</footer>

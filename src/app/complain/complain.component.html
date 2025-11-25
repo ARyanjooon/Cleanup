@@ -1,0 +1,319 @@
+<div class="page-wrapper">
+    <!-- Animated Background -->
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <div class="container">
+    </div> <!-- Header Section -->
+    <header class="page-header animate-fade-down">
+        <div class="header-content">
+            <div class="icon-wrapper">
+                <span class="header-icon">🗑️</span>
+            </div>
+            <div class="text-content">
+                <h1 class="gradient-text">Community Waste Reporter</h1>
+                <p class="subtitle">Join hands to keep our environment clean and green</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs animate-fade-up">
+        <div class="glass-pill">
+            <button class="tab-btn" [class.active]="activeTab === 'report'" (click)="setActiveTab('report')">
+                <span class="icon">📱</span>
+                <span>Report Issue</span>
+                <div class="active-indicator" *ngIf="activeTab === 'report'"></div>
+            </button>
+            <button class="tab-btn" [class.active]="activeTab === 'dashboard'" (click)="setActiveTab('dashboard')">
+                <span class="icon">📊</span>
+                <span>Authority Dashboard</span>
+                <div class="active-indicator" *ngIf="activeTab === 'dashboard'"></div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+
+        <!-- REPORT TAB -->
+        <section *ngIf="activeTab === 'report'" class="report-section">
+
+            <!-- Tips Cards (Staggered Grid) -->
+            <div class="tips-grid stagger-container">
+                <div class="tip-card glass-card animate-item" style="--delay: 1;">
+                    <div class="card-icon">📸</div>
+                    <h3>Include Photos</h3>
+                    <p>Clear photos help authorities identify and resolve issues faster.</p>
+                </div>
+                <div class="tip-card glass-card animate-item" style="--delay: 2;">
+                    <div class="card-icon">📍</div>
+                    <h3>Be Specific</h3>
+                    <p>Provide exact location details and describe the issue clearly.</p>
+                </div>
+                <div class="tip-card glass-card animate-item" style="--delay: 3;">
+                    <div class="card-icon">⚠️</div>
+                    <h3>Prioritize Hazards</h3>
+                    <p>Mark hazardous waste or overflowing bins as high priority.</p>
+                </div>
+                <div class="tip-card glass-card animate-item" style="--delay: 4;">
+                    <div class="card-icon">📞</div>
+                    <h3>Stay Informed</h3>
+                    <p>Provide contact info to receive updates on resolution.</p>
+                </div>
+            </div>
+
+            <!-- Report Form -->
+            <div class="form-container glass-panel animate-fade-up">
+                <div class="panel-header">
+                    <h2>Submit a New Report</h2>
+                    <span class="badge">New</span>
+                </div>
+
+                <form (ngSubmit)="submitReport()" #reportForm="ngForm" class="report-form">
+                    <div class="form-grid">
+                        <!-- Issue Type -->
+                        <div class="form-group">
+                            <label>Issue Type</label>
+                            <div class="select-wrapper">
+                                <select [(ngModel)]="reportFormData.type" name="type" required>
+                                    <option value="" disabled selected>Select issue type</option>
+                                    <option value="illegal-dumping">🚛 Illegal Dumping</option>
+                                    <option value="overflowing-bin">🗑️ Overflowing Bin</option>
+                                    <option value="litter">🍃 Litter/Scattered Waste</option>
+                                    <option value="hazardous">⚠️ Hazardous Waste</option>
+                                    <option value="broken-bin">🔧 Broken/Damaged Bin</option>
+                                    <option value="other">❓ Other</option>
+                                </select>
+                                <span class="select-arrow">▼</span>
+                            </div>
+                        </div>
+
+                        <!-- Priority -->
+                        <div class="form-group">
+                            <label>Priority Level</label>
+                            <div class="priority-selector">
+                                <label class="radio-card low" [class.selected]="reportFormData.priority === 'low'">
+                                    <input type="radio" name="priority" value="low"
+                                        [(ngModel)]="reportFormData.priority" required>
+                                    <span class="dot"></span>
+                                    <span>Low</span>
+                                </label>
+                                <label class="radio-card medium"
+                                    [class.selected]="reportFormData.priority === 'medium'">
+                                    <input type="radio" name="priority" value="medium"
+                                        [(ngModel)]="reportFormData.priority" required>
+                                    <span class="dot"></span>
+                                    <span>Medium</span>
+                                </label>
+                                <label class="radio-card high" [class.selected]="reportFormData.priority === 'high'">
+                                    <input type="radio" name="priority" value="high"
+                                        [(ngModel)]="reportFormData.priority" required>
+                                    <span class="dot"></span>
+                                    <span>High</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-group">
+                        <label>Location</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">📍</span>
+                            <input type="text" placeholder="Enter street address or landmark"
+                                [(ngModel)]="reportFormData.location" name="location" required>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="4" placeholder="Describe the waste issue in detail..."
+                            [(ngModel)]="reportFormData.description" name="description" required></textarea>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="form-group">
+                        <label>Photo Evidence</label>
+                        <div class="file-upload-area" (click)="triggerFileInput()" [class.has-file]="selectedFile">
+                            <input type="file" id="photoUpload" accept="image/*" class="hidden"
+                                (change)="onFileSelected($event)">
+
+                            <div class="upload-content" *ngIf="!selectedFile">
+                                <div class="upload-icon-circle">
+                                    <span class="icon">☁️</span>
+                                </div>
+                                <p class="upload-text">Click to upload or drag and drop</p>
+                                <p class="upload-hint">PNG, JPG up to 10MB</p>
+                            </div>
+
+                            <div class="preview-content" *ngIf="selectedFile">
+                                <img [src]="imagePreview" class="preview-image">
+                                <div class="preview-actions">
+                                    <span class="file-name">{{ selectedFile.name }}</span>
+                                    <button type="button" class="remove-btn"
+                                        (click)="removePhoto(); $event.stopPropagation()">✕</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info Grid -->
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Your Name (Optional)</label>
+                            <input type="text" placeholder="John Doe" [(ngModel)]="reportFormData.reporterName"
+                                name="reporterName">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number (Optional)</label>
+                            <input type="tel" placeholder="(555) 123-4567" [(ngModel)]="reportFormData.phone"
+                                name="phone">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Contact (Optional)</label>
+                        <input type="email" placeholder="your.email@example.com" [(ngModel)]="reportFormData.contact"
+                            name="contact">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date & Time</label>
+                        <input type="datetime-local" [(ngModel)]="reportFormData.incidentDate" name="incidentDate">
+                    </div>
+
+                    <button type="submit" class="submit-btn" [disabled]="!reportForm.form.valid">
+                        <span class="btn-content">
+                            <span>Submit Report</span>
+                            <span class="btn-icon">➜</span>
+                        </span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- DASHBOARD TAB -->
+        <section *ngIf="activeTab === 'dashboard'" class="dashboard-section">
+
+            <!-- Stats Cards -->
+            <div class="stats-grid stagger-container">
+                <div class="stat-card glass-card animate-item" style="--delay: 1;">
+                    <div class="stat-icon blue">📋</div>
+                    <div class="stat-info">
+                        <span class="stat-value">{{ reports.length }}</span>
+                        <span class="stat-label">Total Reports</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-card animate-item" style="--delay: 2;">
+                    <div class="stat-icon red">🚨</div>
+                    <div class="stat-info">
+                        <span class="stat-value">{{ getUrgentCount() }}</span>
+                        <span class="stat-label">High Priority</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-card animate-item" style="--delay: 3;">
+                    <div class="stat-icon green">✅</div>
+                    <div class="stat-info">
+                        <span class="stat-value">{{ getResolvedCount() }}</span>
+                        <span class="stat-label">Resolved</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-card animate-item" style="--delay: 4;">
+                    <div class="stat-icon yellow">⏳</div>
+                    <div class="stat-info">
+                        <span class="stat-value">{{ getPendingCount() }}</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-panel glass-panel animate-fade-up">
+                <div class="panel-header">
+                    <h2>Authority Dashboard</h2>
+
+                    <!-- Filters -->
+                    <div class="filters-bar">
+                        <select [(ngModel)]="statusFilter" (change)="filterReports()">
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+                        <select [(ngModel)]="priorityFilter" (change)="filterReports()">
+                            <option value="all">All Priorities</option>
+                            <option value="high">High Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="low">Low Priority</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Reports List -->
+                <div class="reports-list stagger-container">
+                    <div class="report-item glass-card animate-item"
+                        *ngFor="let report of filteredReports; let i = index" [style.--delay]="i">
+                        <div class="report-status-stripe" [ngClass]="getStatusColor(report.status)"></div>
+
+                        <div class="report-content">
+                            <div class="report-header">
+                                <div class="report-type">
+                                    <span class="type-icon">{{ getTypeIcon(report.type) }}</span>
+                                    <div class="type-info">
+                                        <h3>{{ report.location }}</h3>
+                                        <span class="timestamp">{{ report.timestamp }}</span>
+                                    </div>
+                                </div>
+                                <div class="report-badges">
+                                    <span class="badge priority" [ngClass]="report.priority">{{ report.priority
+                                        }}</span>
+                                    <span class="badge status" [ngClass]="report.status">{{ report.status }}</span>
+                                </div>
+                            </div>
+
+                            <p class="report-desc">{{ report.description }}</p>
+
+                            <div class="report-footer">
+                                <div class="report-meta">
+                                    <span *ngIf="report.photo" class="meta-tag">📷 Photo</span>
+                                    <span *ngIf="report.contact" class="meta-tag">📧 Contact</span>
+                                </div>
+
+                                <div class="action-buttons">
+                                    <button *ngIf="report.status === 'pending'"
+                                        (click)="updateReportStatus(report.id, 'in-progress')" class="action-btn start">
+                                        Start Work
+                                    </button>
+                                    <button *ngIf="report.status === 'in-progress'"
+                                        (click)="updateReportStatus(report.id, 'resolved')" class="action-btn resolve">
+                                        Mark Resolved
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" *ngIf="showSuccessMessage" (click)="closeSuccessMessage()">
+    <div class="success-modal animate-pop-in" (click)="$event.stopPropagation()">
+        <div class="success-icon">
+            <div class="checkmark">✓</div>
+        </div>
+        <h3>Report Submitted!</h3>
+        <p>Thank you for helping keep our community clean. Authorities have been notified.</p>
+        <button class="modal-btn" (click)="closeSuccessMessage()">Close</button>
+    </div>
+</div>

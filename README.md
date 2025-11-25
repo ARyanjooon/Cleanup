@@ -1,5 +1,11 @@
 # CommunityWasteReportingApp
 
+This application allows users to report waste in their community, helping to keep neighborhoods clean.
+
+## Features
+
+*   Report waste with location and a description.
+*   View a map of reported waste sites.
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
 
 ## Development server

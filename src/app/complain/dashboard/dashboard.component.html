@@ -1,0 +1,203 @@
+<div class="container mx-auto px-4 py-6 max-w-6xl">
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">🗑️ Authority Dashboard</h1>
+        <p class="text-gray-600">Manage and track all waste reports in your community</p>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center">
+                <div class="text-3xl mr-4">📊</div>
+                <div>
+                    <p class="text-sm text-gray-600">Total Reports</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ reports.length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center">
+                <div class="text-3xl mr-4">⏳</div>
+                <div>
+                    <p class="text-sm text-gray-600">Pending</p>
+                    <p class="text-2xl font-bold text-orange-600">{{ getPendingCount() }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center">
+                <div class="text-3xl mr-4">🔄</div>
+                <div>
+                    <p class="text-sm text-gray-600">In Progress</p>
+                    <p class="text-2xl font-bold text-blue-600">{{ getInProgressCount() }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center">
+                <div class="text-3xl mr-4">✅</div>
+                <div>
+                    <p class="text-sm text-gray-600">Resolved</p>
+                    <p class="text-2xl font-bold text-green-600">{{ getResolvedCount() }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Filters</h3>
+        <div class="grid md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="statusFilter" (change)="filterReports()">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="priorityFilter" (change)="filterReports()">
+                    <option value="all">All Priorities</option>
+                    <option value="high">High Priority</option>
+                    <option value="medium">Medium Priority</option>
+                    <option value="low">Low Priority</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="typeFilter" (change)="filterReports()">
+                    <option value="all">All Types</option>
+                    <option value="illegal-dumping">Illegal Dumping</option>
+                    <option value="overflowing-bin">Overflowing Bin</option>
+                    <option value="litter">Litter</option>
+                    <option value="hazardous">Hazardous Waste</option>
+                    <option value="broken-bin">Broken Bin</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                <select class="w-full p-2 border border-gray-300 rounded-lg" [(ngModel)]="dateFilter" (change)="filterReports()">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports List -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-semibold text-gray-800">Reports ({{ filteredReports.length }})</h3>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" (click)="exportReports()">
+                📊 Export Data
+            </button>
+        </div>
+
+        <div class="space-y-4">
+            <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow" *ngFor="let report of filteredReports; trackBy: trackByReportId">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">{{ getTypeIcon(report.type) }}</span>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">{{ report.location }}</h4>
+                            <p class="text-sm text-gray-500">{{ report.timestamp }}</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium" [ngClass]="getPriorityColor(report.priority)">
+                            {{ report.priority.toUpperCase() }}
+                        </span>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium" [ngClass]="getStatusColor(report.status)">
+                            {{ report.status.replace('-', ' ').toUpperCase() }}
+                        </span>
+                    </div>
+                </div>
+
+                <p class="text-gray-700 mb-4">{{ report.description }}</p>
+
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-4 text-sm text-gray-500">
+                        <span *ngIf="report.photo">📷 Photo attached</span>
+                        <span *ngIf="report.contact; else anonymous">📧 {{ report.contact }}</span>
+                        <ng-template #anonymous>📧 Anonymous</ng-template>
+                    </div>
+                    <div class="flex gap-2">
+                        <button *ngIf="report.status === 'pending'" (click)="updateReportStatus(report.id, 'in-progress')"
+                                class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">
+                            Start Work
+                        </button>
+                        <button *ngIf="report.status === 'in-progress'" (click)="updateReportStatus(report.id, 'resolved')"
+                                class="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600">
+                            Mark Resolved
+                        </button>
+                        <button (click)="viewReportDetails(report)" class="px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="filteredReports.length === 0" class="text-center py-12">
+            <div class="text-6xl mb-4">📋</div>
+            <h3 class="text-xl font-semibold text-gray-600 mb-2">No reports found</h3>
+            <p class="text-gray-500">Try adjusting your filters or check back later for new reports.</p>
+        </div>
+    </div>
+
+    <!-- Report Details Modal -->
+    <div *ngIf="selectedReport" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="closeReportDetails()">
+        <div class="bg-white rounded-xl p-8 max-w-2xl mx-4 max-h-96 overflow-y-auto" (click)="$event.stopPropagation()">
+            <div class="flex justify-between items-start mb-6">
+                <h3 class="text-xl font-bold text-gray-800">Report Details</h3>
+                <button (click)="closeReportDetails()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Location</label>
+                    <p class="text-gray-800">{{ selectedReport.location }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Type</label>
+                    <p class="text-gray-800">{{ selectedReport.type.replace('-', ' ').toUpperCase() }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Priority</label>
+                    <span class="px-2 py-1 rounded-full text-xs font-medium" [ngClass]="getPriorityColor(selectedReport.priority)">
+                        {{ selectedReport.priority.toUpperCase() }}
+                    </span>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Status</label>
+                    <span class="px-2 py-1 rounded-full text-xs font-medium" [ngClass]="getStatusColor(selectedReport.status)">
+                        {{ selectedReport.status.replace('-', ' ').toUpperCase() }}
+                    </span>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <p class="text-gray-800">{{ selectedReport.description }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Contact</label>
+                    <p class="text-gray-800">{{ selectedReport.contact || 'Anonymous' }}</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Timestamp</label>
+                    <p class="text-gray-800">{{ selectedReport.timestamp }}</p>
+                </div>
+                <div *ngIf="selectedReport.photo">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+                    <img [src]="selectedReport.photo" alt="Report photo" class="max-w-full h-48 object-cover rounded-lg">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
