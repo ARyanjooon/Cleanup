@@ -1,7 +1,8 @@
 <div class="hero-section">
   <div class="hero-content" #animateItem>
     <h1 class="hero-text">A Cleaner Community Starts With You.</h1>
-    <p class="hero-text">See waste? Report it. Help us keep our community clean by reporting illegal dumping and overflowing bins.</p>
+    <p class="hero-text">See waste? Report it. Help us keep our community clean by reporting illegal dumping and
+      overflowing bins.</p>
     <button class="cta-button" routerLink="/complain">Report Waste Now</button>
   </div>
 </div>
@@ -17,11 +18,11 @@
     <h2>How It Works</h2>
     <div class="steps-grid">
       @for (step of howItWorksSteps; track step.step) {
-        <div class="step-item">
-          <div class="step-number">{{ step.step }}</div>
-          <h3>{{ step.title }}</h3>
-          <p>{{ step.description }}</p>
-        </div>
+      <div class="step-item">
+        <div class="step-number">{{ step.step }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.description }}</p>
+      </div>
       }
     </div>
   </div>
@@ -32,10 +33,10 @@
     <h2>Why It Matters</h2>
     <div class="benefits-grid">
       @for (benefit of benefits; track benefit.title) {
-        <div class="benefit-item">
-          <h3>{{ benefit.title }}</h3>
-          <p>{{ benefit.description }}</p>
-        </div>
+      <div class="benefit-item">
+        <h3>{{ benefit.title }}</h3>
+        <p>{{ benefit.description }}</p>
+      </div>
       }
     </div>
   </div>
@@ -47,9 +48,9 @@
     <p class="section-subtitle">See the impact our community is making! Here are some of the latest reported areas.</p>
     <div class="activity-grid">
       @for(item of recentActivity; track item.src) {
-        <div class="activity-item" [attr.data-alt]="item.alt">
-          <img [ngSrc]="item.src" [alt]="item.alt" width="800" height="600" priority="false">
-        </div>
+      <div class="activity-item" [attr.data-alt]="item.alt">
+        <img [ngSrc]="item.src" [alt]="item.alt" fill priority="false">
+      </div>
       }
     </div>
   </div>
@@ -61,10 +62,10 @@
     <div class="testimonials-scroller">
       <div class="testimonials-container">
         @for (testimonial of scrollingTestimonials; track $index) {
-          <div class="testimonial">
-            <blockquote>"{{ testimonial.quote }}"</blockquote>
-            <cite>- {{ testimonial.author }}</cite>
-          </div>
+        <div class="testimonial">
+          <blockquote>"{{ testimonial.quote }}"</blockquote>
+          <cite>- {{ testimonial.author }}</cite>
+        </div>
         }
       </div>
     </div>
